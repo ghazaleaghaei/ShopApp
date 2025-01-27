@@ -2,6 +2,7 @@ import vazirFont from "@/constants/localFonts";
 import "./globals.css"
 import Header from "./Header";
 import ReactQueryProvider from "../providers/ReactQueryProvidr";
+import { Toaster } from "react-hot-toast";
 
 export const metadata = {
     title: "Create Next App",
@@ -14,6 +15,7 @@ export default function RootLayout({ children }) {
             <body
                 className={`${vazirFont.variable} font-sans`}
             >
+                <Toaster />
                 <Header />
                 <div className="w-full max-w-7xl mx-auto bg-secondary-50/20 p-8 rounded min-h-screen my-6">
                     <ReactQueryProvider>
