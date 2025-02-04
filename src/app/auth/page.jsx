@@ -2,28 +2,31 @@
 
 import { useState } from "react"
 import SendOTPForm from "./SendOTPForm"
-import useSendOtp from "@/hooks/useSendOtp"
 import CheckOTPForm from "./CheckOTPForm"
+import { useMutation } from "@tanstack/react-query"
+import { getOtpApi } from "@/services/AuthService"
+import toast from "react-hot-toast"
 
 function Auth() {
 
     const [phoneNumber, setPhoneNumber] = useState("")
-    const { isSendingOtp, getOtp } = useSendOtp()
+    const { isPending: isSendingOtp, data: otpResponse, mutateAsync } = useMutation({
+        mutationFn: getOtpApi,
+    })
     const [step, setStep] = useState(1)
 
-    const sendOtpHandler = (e) => {
+    const sendOtpHandler = async (e) => {
         e.preventDefault()
-        console.log({ phoneNumber })
+
         //with react-query
-        getOtp({ phoneNumber }, {
-            onSuccess: () => {
-                setStep(2)
-            },
-            onError: () => {
-                setStep(2)
-            }
+        try {
+            const data = await mutateAsync({ phoneNumber })
+            setStep(2)
+            toast.success(data.message)
+        } catch (error) {
+            setStep(2)
+            toast.error(error?.response?.data?.message)
         }
-        )
         //with axios
         // try {
         //     const { data } = await http.post("/user/get-otp", { phoneNumber })
@@ -49,6 +52,7 @@ function Auth() {
                     phoneNumber={phoneNumber}
                     onBack={() => setStep((s) => s - 1)}
                     onResendOtp={sendOtpHandler}
+                    otpResponse={otpResponse}
                 />
             default:
                 return null;

@@ -1,16 +1,21 @@
 "use client"
 
+import { TiArrowLeftThick } from "react-icons/ti";
 import TextField from "@/ components/TextField"
-import useCheckOtp from "@/hooks/useCheckOtp"
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation";
+import { checkOtpApi } from "@/services/AuthService";
+import toast from "react-hot-toast";
+import { useMutation } from "@tanstack/react-query";
 
 function CheckOTPForm({ phoneNumber, onBack, onResendOtp, otpResponse }) {
 
-
     const [time, setTime] = useState(10)
     const [code, setCode] = useState("")
-    const { isCheckingOtp, checkOtp } = useCheckOtp()
-    console.log(code)
+    const { isPending, mutateAsync } = useMutation({
+        mutationFn: checkOtpApi
+    })
+    const router = useRouter()
 
     useEffect(() => {
         const timer = time > 0 && setInterval(() => setTime((t) => t - 1), 1000)
@@ -19,23 +24,43 @@ function CheckOTPForm({ phoneNumber, onBack, onResendOtp, otpResponse }) {
         }
     }, [time])
 
-    const checkOtpHandler = (e) => {
+    const checkOtpHandler = async (e) => {
         e.preventDefault()
-        console.log({ phoneNumber, code })
-        checkOtp({
-            phoneNumber: phoneNumber,
-            otp: code
-        })
+        try {
+            const data = await mutateAsync({
+                phoneNumber: phoneNumber,
+                otp: code,
+            })
+            toast.success(data.message)
+            if (data.user.isActive) {
+                router.push("/")
+
+            } else {
+                router.push("/complete-profile")
+            }
+
+        } catch (error) {
+            toast.error(error?.response?.data?.message)
+        }
     }
 
     return <div className="flex flex-col gap-2">
         <button
-            className="w-fit text-error"
+            className="w-fit"
             onClick={onBack}
         >
-            برگشت
+            <TiArrowLeftThick />
         </button>
-        <div className="w-fit text-success">
+        {
+            otpResponse &&
+            <p>
+                {otpResponse.message}
+                <button onClick={onBack}>
+                    ویرایش
+                </button>
+            </p>
+        }
+        <div className="w-fit">
             {
                 time > 0
                     ? <p>{time}پانیه تا ارسال مجدد کد </p>
@@ -51,7 +76,7 @@ function CheckOTPForm({ phoneNumber, onBack, onResendOtp, otpResponse }) {
             />
             <button
                 type="submit"
-                disabled={isCheckingOtp}
+                disabled={isPending}
                 className="disabled:opacity-50 w-full rounded-lg bg-primary-900 text-center p-2 text-white"
             >
                 تایید

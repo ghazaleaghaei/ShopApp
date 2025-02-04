@@ -7,7 +7,7 @@ export default function useSendOtp() {
     const { isPending: isSendingOtp, error, data: otpResponse, mutate: getOtp } = useMutation({
         mutationFn: getOtpApi,
         onSuccess: (data) => {
-            toast.success(data)
+            toast.success(data.message)
         },
         onError: (err) => toast.error(err?.response?.data?.message)
     })
