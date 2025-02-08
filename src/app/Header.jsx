@@ -28,6 +28,16 @@ function Header() {
                         </Link>
                     </li>
                     <li>
+                        <Link href="/user">
+                            پنل کاربر
+                        </Link>
+                    </li>
+                    <li>
+                        <Link href="/admin">
+                            پنل ادمین
+                        </Link>
+                    </li>
+                    <li>
                         {
                             user ? (
                                 <span>{user.name}</span>
