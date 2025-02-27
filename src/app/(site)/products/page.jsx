@@ -1,10 +1,12 @@
 import { getCategoriesApi } from "@/services/categoryServices"
 import { getProductsApi } from "@/services/productServices"
 import CategorySidebar from "./_/components/CategorySidebar"
+import queryString from "query-string"
 
-async function Products() {
+async function Products({ searchParams }) {
 
-    const { products } = await getProductsApi()
+    const query = queryString.stringify(await searchParams)
+    const { products } = await getProductsApi(query)
     const { categories } = await getCategoriesApi()
 
     return <div className="grid grid-cols-4">
