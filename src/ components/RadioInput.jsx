@@ -1,4 +1,4 @@
-function CheckBox({
+function RadioInput({
     id,
     name,
     value,
@@ -6,15 +6,16 @@ function CheckBox({
     checked,
     label,
 }) {
+
     return <li className="flex items-center gap-x-2 text-secondary-600">
         <input
-            type="checkbox"
+            type="radio"
             name={name}
             id={id}
             checked={checked}
             value={value}
             onChange={onChange}
-            className="cursor-pointer rounded-[5px] border-none bg-secondary-100/80 w-4 h-4 checked:text-primary-900"
+            className="cursor-pointer rounded-full border-none bg-secondary-100/80 w-4 h-4 checked:text-primary-900"
         />
         <label
             htmlFor={id}
@@ -24,4 +25,4 @@ function CheckBox({
         </label>
     </li>
 }
-export default CheckBox
+export default RadioInput

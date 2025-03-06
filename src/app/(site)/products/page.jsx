@@ -6,8 +6,18 @@ import queryString from "query-string"
 async function Products({ searchParams }) {
 
     const query = queryString.stringify(await searchParams)
-    const { products } = await getProductsApi(query)
-    const { categories } = await getCategoriesApi()
+
+    // const { products } = await getProductsApi(query)
+    // const { categories } = await getCategoriesApi()
+
+    const productsPromise = getProductsApi(query)
+    const categoriesPromise = getCategoriesApi()
+
+    const [{ products }, { categories }] = await Promise.all([
+        productsPromise,
+        categoriesPromise,
+    ])
+
 
     return <div className="grid grid-cols-4">
         <h1 className="text-xl font-bold mb-6 col-span-4">صفحه محصولات</h1>

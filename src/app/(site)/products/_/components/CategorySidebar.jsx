@@ -1,55 +1,13 @@
-"use client"
-
-import CheckBox from "@/ components/CheckBox"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useCallback, useState } from "react"
+import ProductsFilter from "./ProductsFilter"
+import ProductsSort from "./ProductsSort"
 
 function CategorySidebar({ categories }) {
 
-    const searchParams = useSearchParams()
-    const pathname = usePathname()
-    const router = useRouter()
-    const [selectedCategories, setSelectedCategories] = useState(
-        searchParams.get("category")?.split(",") || []
+    return (
+        <div className="col-span-1">
+            <ProductsFilter categories={categories} />
+            <ProductsSort />
+        </div>
     )
-
-    const categoryHandler = (e) => {
-
-        const value = e.target.value
-        const newParams = new URLSearchParams(searchParams.toString());
-
-        if (selectedCategories.includes(value)) {
-            const categories = selectedCategories.filter(item => item !== value)
-            setSelectedCategories(categories)
-            if (categories.length > 0) {
-                newParams.set("category", categories)
-            } else {
-                newParams.delete("category")
-            }
-        } else {
-            setSelectedCategories([...selectedCategories, value])
-            newParams.set("category", [...selectedCategories, value])
-        }
-
-
-        router.push(pathname + "?" + newParams.toString(), { scroll: false })
-    }
-
-    return <div className="col-span-1">
-        <p>دسته بندی ها</p>
-        <ul>
-            {
-                categories.map(category => <CheckBox
-                    key={category._id}
-                    id={category._id}
-                    value={category.englishTitle}
-                    name="product-type"
-                    label={category.title}
-                    onChange={categoryHandler}
-                    checked={selectedCategories.includes(category.englishTitle)}
-                />)
-            }
-        </ul>
-    </div>
 }
 export default CategorySidebar
