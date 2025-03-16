@@ -1,4 +1,5 @@
 import { getProductApi, getProductsApi } from "@/services/productServices"
+import AddToCart from "../_/components/AddToCart"
 
 export const dynamic = "force-static"
 export const dynamicParams = false
@@ -37,11 +38,7 @@ async function Page({ params }) {
                 </div>
             )
         }
-        <div>
-            <button className="bg-primary-900 p-2 rounded-xl shadow-xl text-white">
-                اضافه کردن به سبد خرید
-            </button>
-        </div>
+        <AddToCart product={product} />
     </div>
 }
 export default Page
