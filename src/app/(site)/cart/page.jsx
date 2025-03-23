@@ -3,6 +3,7 @@
 import useUser from "@/hooks/useUser"
 import Link from "next/link"
 import CartItem from "./_/components/CartItem"
+import CartSummary from "./_/components/CartSummary"
 
 
 function CartPage() {
@@ -51,7 +52,7 @@ function CartPage() {
             }
         </div>
         <div className="col-span-1">
-            cart summary
+            <CartSummary payDetail={cart.payDetail} />
         </div>
     </div>
 }

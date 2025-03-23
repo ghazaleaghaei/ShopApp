@@ -30,6 +30,11 @@ function SideBar() {
                     اطلاعات کاربری
                 </Link>
             </li>
+            <li>
+                <Link href="/user/payments">
+                    سفارشات
+                </Link>
+            </li>
             <button
                 className="w-fit"
                 onClick={logoutHandler}

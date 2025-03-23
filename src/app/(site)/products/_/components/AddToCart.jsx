@@ -1,6 +1,6 @@
 "use client"
 
-import useAddToCart from "@/hooks/useCart"
+import { useAddToCart } from "@/hooks/useCart"
 import useUser from "@/hooks/useUser"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
