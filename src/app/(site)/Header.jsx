@@ -9,7 +9,7 @@ function Header() {
     const { user, cart } = data || {}
 
     return (
-        <header className={`w-full shadow-lg sticky top-0 transition-all duration-300 ${isLoading ? "blur-sm opacity-70" : "opacity-100 blur-0"}`}>
+        <header className={`w-full shadow-lg sticky top-0 transition-all duration-300 bg-white ${isLoading ? "blur-sm opacity-70" : "opacity-100 blur-0"}`}>
             <nav className="w-full max-w-7xl mx-auto">
                 <ul className="flex justify-between w-full p-4 items-center">
                     <li>

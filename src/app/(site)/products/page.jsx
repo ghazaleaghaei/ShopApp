@@ -5,6 +5,9 @@ import queryString from "query-string"
 import Link from "next/link"
 import { toLocalDate } from "@/functions/toLocalDate"
 import AddToCart from "./_/components/AddToCart"
+import LikeProduct from "./_/components/LikeProduct"
+import { cookies } from "next/headers"
+import { toStringCookies } from "@/functions/toStringCookies"
 
 async function Products({ searchParams }) {
 
@@ -13,7 +16,10 @@ async function Products({ searchParams }) {
     // const { products } = await getProductsApi(query)
     // const { categories } = await getCategoriesApi()
 
-    const productsPromise = getProductsApi(query)
+    const cookieStore = await cookies()
+    const strCookies = toStringCookies(cookieStore)
+
+    const productsPromise = getProductsApi(query, strCookies)
     const categoriesPromise = getCategoriesApi()
 
     const [{ products }, { categories }] = await Promise.all([
@@ -46,6 +52,7 @@ async function Products({ searchParams }) {
                     >
                         مشاهده محصول
                     </Link>
+                    <LikeProduct product={product} />
                     <AddToCart product={product} />
                 </div>)
             }
