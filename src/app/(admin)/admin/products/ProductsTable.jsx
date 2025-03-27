@@ -68,12 +68,12 @@ function ProductsTable({ products }) {
                             <Link href={`/admin/products/${product._id}`}>
                                 <HiEye className="text-primary-900 w-6 h-6" />
                             </Link>
-                            <Link>
-                                <HiTrash className="text-rose-600 w-6 h-6" />
-                            </Link>
                             <button>
-                                <BiSolidEditAlt className="w-6 h-6 text-secondary-600" />
+                                <HiTrash className="text-rose-600 w-6 h-6" />
                             </button>
+                            <Link href={`/admin/products/edit/${product._id}`}>
+                                <BiSolidEditAlt className="w-6 h-6 text-secondary-600" />
+                            </Link>
                         </td>
                     </tr>)
                 }

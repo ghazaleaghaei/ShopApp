@@ -8,8 +8,12 @@ export function getProductsApi(query, cookies) {
     }).then(({ data }) => data.data)
 }
 
-export function getProductApi(slug) {
+export function getProductBySlugApi(slug) {
     return http.get(`/product/slug/${slug}`).then(({ data }) => data.data)
+}
+
+export function getProductByIdApi(id) {
+    return http.get(`/product/${id}`).then(({ data }) => data.data)
 }
 
 export function likeProductApi(id) {

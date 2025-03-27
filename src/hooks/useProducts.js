@@ -1,4 +1,4 @@
-import { addProductApi, getProductsApi } from "@/services/productServices"
+import { addProductApi, getProductByIdApi, getProductsApi } from "@/services/productServices"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 import toast from "react-hot-toast"
@@ -8,12 +8,12 @@ export function useProducts() {
         queryKey: ["get-products"],
         queryFn: getProductsApi,
         retry: false,
+        refetchOnWindowFocus: true,
     })
     return { data, error, isLoading }
 }
 
-export default function useAddProduct(formData) {
-    console.log(formData)
+export function useAddProduct(formData) {
 
     const router = useRouter()
 
@@ -34,4 +34,14 @@ export default function useAddProduct(formData) {
     }
 
     return { isLoading, error, submitHandler }
+}
+
+export function useProductById(id) {
+    const { data, error, isLoading } = useQuery({
+        queryKey: ["get-product", id],
+        queryFn: () => getProductByIdApi(id),
+        retry: false,
+        refetchOnWindowFocus: true,
+    })
+    return { data, error, isLoading }
 }

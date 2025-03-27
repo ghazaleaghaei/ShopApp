@@ -1,4 +1,4 @@
-import { getProductApi, getProductsApi } from "@/services/productServices"
+import { getProductBySlugApi, getProductsApi } from "@/services/productServices"
 import AddToCart from "../_/components/AddToCart"
 
 export const dynamic = "force-static"
@@ -15,7 +15,7 @@ export async function generateStaticParams() {
 async function Page({ params }) {
 
     const { slug } = await params
-    const { product } = await getProductApi(slug)
+    const { product } = await getProductBySlugApi(slug)
 
     return <div className="flex flex-col gap-6">
         <h1 className="font-bold text-2xl">{product.title}</h1>
