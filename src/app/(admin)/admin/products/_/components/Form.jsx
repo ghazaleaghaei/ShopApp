@@ -2,8 +2,9 @@ import TextField from "@/ components/TextField"
 import Select from "./Select"
 import TagsInput from "./TagsInput"
 import { useCategories } from "@/hooks/useCategories"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useAddProduct } from "@/hooks/useProducts"
+import { includeObj } from "@/functions/includeObj"
 
 const productsFormData = [
     {
@@ -88,6 +89,15 @@ function Form({ productToEdit = {} }) {
         imageLink: "",
     })
 
+    useEffect(() => {
+        if (isEditSession) {
+            setFormData(includeObj(productToEdit, includesProductKey))
+            setTags(productToEdit.tags)
+            setSelectCategories(productToEdit.category._id)
+        }
+
+    }, [])
+
     const handelChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
@@ -105,7 +115,7 @@ function Form({ productToEdit = {} }) {
                     label={item.label}
                     name={item.name}
                     onChange={handelChange}
-                    value={formData[item.name]}
+                    value={formData[item.name] || ""}
                 />
             )
         }

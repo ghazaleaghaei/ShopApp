@@ -1,5 +1,5 @@
 
-function Select({ label, name, selectedCategories, handleChange, options, }) {
+function Select({ label, name, selectCategories, handleChange, options, }) {
 
     return (
         <div className="flex flex-col gap-2 my-4">
@@ -9,7 +9,7 @@ function Select({ label, name, selectedCategories, handleChange, options, }) {
             <select
                 id={name}
                 className="rounded-xl p-2 outline-none focus:shadow-lg duration-300 bg-color2/10"
-                value={selectedCategories}
+                value={selectCategories}
                 onChange={handleChange}
             >
                 {

@@ -1,6 +1,6 @@
 "use client"
 
-import useUser from "@/hooks/useUser"
+import { useUser } from "@/hooks/useUser"
 import Link from "next/link"
 import CartItem from "./_/components/CartItem"
 import CartSummary from "./_/components/CartSummary"

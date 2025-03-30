@@ -3,7 +3,7 @@
 import TextField from "@/ components/TextField"
 import { includeObj } from "@/functions/includeObj"
 import useUpdateUser from "@/hooks/useUpdateUser"
-import useUser from "@/hooks/useUser"
+import { useUser } from "@/hooks/useUser"
 import { useEffect, useState } from "react"
 
 function Profile() {

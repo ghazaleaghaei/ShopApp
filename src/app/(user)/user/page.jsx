@@ -1,9 +1,9 @@
 "use client"
 
 import { toLocalDate } from "@/functions/toLocalDate"
-import useUser from "@/hooks/useUser"
 import PaymentTable from "./payments/PaymentTable"
 import Link from "next/link"
+import { useUser } from "@/hooks/useUser"
 
 function Panel() {
 
