@@ -3,7 +3,7 @@ import Select from "./Select"
 import TagsInput from "./TagsInput"
 import { useCategories } from "@/hooks/useCategories"
 import { useEffect, useState } from "react"
-import { useAddProduct } from "@/hooks/useProducts"
+import { useAddProduct, useUpdateProduct } from "@/hooks/useProducts"
 import { includeObj } from "@/functions/includeObj"
 
 const productsFormData = [
@@ -104,9 +104,11 @@ function Form({ productToEdit = {} }) {
 
     const { isLoading, submitHandler } = useAddProduct({ ...formData, tags, category: selectCategories })
 
+    const { editSubmitHandler, isEditing } = useUpdateProduct({ editData: { ...formData, tags, category: selectCategories }, id: editId })
+
     return <form
         className="space-y-4"
-        onSubmit={submitHandler}
+        onSubmit={isEditSession ? editSubmitHandler : submitHandler}
     >
         {
             productsFormData.map(item =>
@@ -133,10 +135,15 @@ function Form({ productToEdit = {} }) {
             options={categories}
         />
         <button
-            className="w-full bg-primary-900 text-white p-3 rounded-xl"
+            className="w-full bg-primary-900 text-white p-3 rounded-xl disabled:opacity-50"
             type="submit"
+            disabled={isLoading || isEditing}
         >
-            اضافه کردن محصول
+            {
+                isEditSession
+                    ? "ویرایش محصول"
+                    : "اضافه کردن محصول"
+            }
         </button>
     </form>
 }

@@ -1,5 +1,5 @@
-import { addProductApi, getProductByIdApi, getProductsApi } from "@/services/productServices"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { addProductApi, getProductByIdApi, getProductsApi, updateProductApi } from "@/services/productServices"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 import toast from "react-hot-toast"
 
@@ -34,6 +34,31 @@ export function useAddProduct(formData) {
     }
 
     return { isLoading, error, submitHandler }
+}
+
+export function useUpdateProduct({ editData, id }) {
+
+    const router = useRouter()
+    const queryClient = useQueryClient();
+
+    const { isLoading: isEditing, error, data, mutateAsync: editProduct } = useMutation({
+        mutationFn: updateProductApi,
+    })
+
+    const editSubmitHandler = async (e) => {
+        e.preventDefault();
+        try {
+            const { message } = await editProduct({ editData, id })
+            router.push("/admin/products")
+            toast.success(message)
+            queryClient.invalidateQueries({ queryKey: ["get-product", id] })
+
+        } catch (error) {
+            toast.error(error?.response?.data?.message)
+        }
+    }
+
+    return { isEditing, data, error, editSubmitHandler }
 }
 
 export function useProductById(id) {

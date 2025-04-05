@@ -23,3 +23,7 @@ export function likeProductApi(id) {
 export function addProductApi(data) {
     return http.post(`/admin/product/add`, data).then(({ data }) => data.data)
 }
+
+export function updateProductApi({ editData, id }) {
+    return http.patch(`/admin/product/update/${id}`, editData).then(({ data }) => data.data)
+}
