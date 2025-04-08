@@ -1,10 +1,10 @@
 import TextField from "@/ components/TextField"
-import Select from "./Select"
-import TagsInput from "./TagsInput"
 import { useCategories } from "@/hooks/useCategories"
 import { useEffect, useState } from "react"
 import { useAddProduct, useUpdateProduct } from "@/hooks/useProducts"
 import { includeObj } from "@/functions/includeObj"
+import TagsInput from "@/ components/TagsInput"
+import Select from "@/ components/Select"
 
 const productsFormData = [
     {
