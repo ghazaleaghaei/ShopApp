@@ -1,7 +1,7 @@
 import Select from "@/ components/Select"
 import TextField from "@/ components/TextField"
 import { useAddCategory } from "@/hooks/useCategories"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const categoriesFormData = [
     {
@@ -48,15 +48,29 @@ const categoryTypes = [
     }
 ]
 
-function Form() {
+function Form({ categoryToEdit = {} }) {
 
-    const [selectedType, setSelectedType] = useState("")
+    const { _id: editId } = categoryToEdit;
+    const isEditSession = Boolean(editId)
 
+    const [selectedType, setSelectedType] = useState()
     const [formData, setFormData] = useState({
         title: "",
         description: "",
         englishTitle: "",
     })
+
+    useEffect(() => {
+        if (isEditSession) {
+            setFormData({
+                title: categoryToEdit.title,
+                description: categoryToEdit.description,
+                englishTitle: categoryToEdit.description
+            })
+            setSelectedType(categoryToEdit.type)
+        }
+
+    }, [categoryToEdit])
 
     const { isLoading, submitHandler } = useAddCategory({ ...formData, type: selectedType })
 
@@ -91,7 +105,11 @@ function Form() {
             type="submit"
             disabled={isLoading}
         >
-            اضافه کردن دسته بندی
+            {
+                isEditSession
+                    ? "ویرایش دسته بندی"
+                    : "اضافه کردن دسته بندی"
+            }
         </button>
     </form>
 }
