@@ -1,4 +1,4 @@
-import { addProductApi, getProductByIdApi, getProductsApi, updateProductApi } from "@/services/productServices"
+import { addProductApi, getProductByIdApi, getProductsApi, removeProductApi, updateProductApi } from "@/services/productServices"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 import toast from "react-hot-toast"
@@ -70,3 +70,27 @@ export function useProductById(id) {
     })
     return { data, error, isLoading }
 }
+
+export function useRemoveProduct() {
+
+    const queryClient = useQueryClient();
+
+    const { isLoading: isRemoving, error, data, mutateAsync: removeProduct } = useMutation({
+        mutationFn: removeProductApi,
+    })
+
+    const removeSubmitHandler = async (id, e) => {
+        e.preventDefault();
+        try {
+            const { message } = await removeProduct(id)
+            toast.success(message)
+            queryClient.invalidateQueries({ queryKey: ["get-products"] })
+
+        } catch (error) {
+            toast.error(error?.response?.data?.message)
+        }
+    }
+
+    return { isRemoving, data, error, removeSubmitHandler }
+}
+

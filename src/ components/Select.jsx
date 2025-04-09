@@ -1,6 +1,6 @@
 
-function Select({ label, name, selectCategories, handleChange, options, }) {
-
+function Select({ label, name, selectCategories, handleChange, options }) {
+    console.log(selectCategories)
     return (
         <div className="flex flex-col gap-2 my-4">
             <label htmlFor={name}>
@@ -12,6 +12,7 @@ function Select({ label, name, selectCategories, handleChange, options, }) {
                 value={selectCategories}
                 onChange={handleChange}
             >
+                <option value="">لطفا انتخاب کنید...</option>
                 {
                     options?.map((option) => <option key={option._id} value={option._id}>
                         {option.title}

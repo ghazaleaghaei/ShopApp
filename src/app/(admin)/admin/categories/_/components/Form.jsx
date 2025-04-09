@@ -1,6 +1,6 @@
 import Select from "@/ components/Select"
 import TextField from "@/ components/TextField"
-import { useAddCategory } from "@/hooks/useCategories"
+import { useAddCategory, useUpdateCategory } from "@/hooks/useCategories"
 import { useEffect, useState } from "react"
 
 const categoriesFormData = [
@@ -53,7 +53,7 @@ function Form({ categoryToEdit = {} }) {
     const { _id: editId } = categoryToEdit;
     const isEditSession = Boolean(editId)
 
-    const [selectedType, setSelectedType] = useState()
+    const [selectedType, setSelectedType] = useState("")
     const [formData, setFormData] = useState({
         title: "",
         description: "",
@@ -65,7 +65,7 @@ function Form({ categoryToEdit = {} }) {
             setFormData({
                 title: categoryToEdit.title,
                 description: categoryToEdit.description,
-                englishTitle: categoryToEdit.description
+                englishTitle: categoryToEdit.englishTitle
             })
             setSelectedType(categoryToEdit.type)
         }
@@ -74,13 +74,16 @@ function Form({ categoryToEdit = {} }) {
 
     const { isLoading, submitHandler } = useAddCategory({ ...formData, type: selectedType })
 
+    const { editSubmitHandler, isEditing } = useUpdateCategory({ editData: { ...formData, type: selectedType }, id: editId })
+
+
     const handelChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
     return <form
         className="space-y-4"
-        onSubmit={submitHandler}
+        onSubmit={isEditSession ? editSubmitHandler : submitHandler}
     >
         {
             categoriesFormData.map(item =>
@@ -103,7 +106,7 @@ function Form({ categoryToEdit = {} }) {
         <button
             className="w-full bg-primary-900 text-white p-3 rounded-xl disabled:opacity-50"
             type="submit"
-            disabled={isLoading}
+            disabled={isLoading || isEditing}
         >
             {
                 isEditSession

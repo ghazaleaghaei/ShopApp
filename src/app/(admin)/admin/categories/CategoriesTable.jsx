@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { HiEye, HiTrash } from "react-icons/hi"
 import { BiSolidEditAlt } from "react-icons/bi";
+import { useRemoveCategory } from "@/hooks/useCategories";
 
 const categoriesTableHeads = [
     {
@@ -29,8 +30,8 @@ const categoriesTableHeads = [
     },
 ]
 
-
 function CategoriesTable({ categories }) {
+    const { isRemoving, removeSubmitHandler } = useRemoveCategory()
     return <div className="shadow-md overflow-auto my-8">
         <table className="border-collapse table-auto w-full min-w-[800px] text-sm">
             <thead>
@@ -62,7 +63,11 @@ function CategoriesTable({ categories }) {
                             <Link href={`/admin/categories/${category._id}`}>
                                 <HiEye className="text-primary-900 w-6 h-6" />
                             </Link>
-                            <button>
+                            <button
+                                className="disabled:opacity-50 cursor-pointer"
+                                onClick={(e) => removeSubmitHandler(category._id, e)}
+                                disabled={isRemoving}
+                            >
                                 <HiTrash className="text-rose-600 w-6 h-6" />
                             </button>
                             <Link href={`/admin/categories/edit/${category._id}`}>

@@ -12,3 +12,10 @@ export function addCategoryApi(data) {
     return http.post("/admin/category/add", data).then(({ data }) => data.data)
 }
 
+export function updateCategoryApi({ editData, id }) {
+    return http.patch(`/admin/category/update/${id}`, editData).then(({ data }) => data.data)
+}
+
+export function removeCategoryApi(id) {
+    return http.delete(`/admin/category/remove/${id}`).then(({ data }) => data.data)
+}
