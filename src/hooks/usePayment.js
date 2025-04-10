@@ -1,5 +1,5 @@
-import { createPaymentApi } from "@/services/PaymentService";
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { createPaymentApi, getAllPaymentsApi } from "@/services/PaymentService";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import toast from "react-hot-toast"
 
 export function usePayment() {
@@ -24,4 +24,13 @@ export function usePayment() {
     }
 
     return { isLoading, error, cart, mutateAsync, createPaymentHandler }
+}
+
+export function useGetPayments() {
+    const { data, error, isLoading } = useQuery({
+        queryKey: ["payments"],
+        queryFn: getAllPaymentsApi,
+        retry: false,
+    })
+    return { data, error, isLoading }
 }

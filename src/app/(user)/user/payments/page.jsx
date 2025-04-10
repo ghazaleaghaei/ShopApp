@@ -1,8 +1,7 @@
 "use client"
 
+import PaymentTable from "@/ components/PaymentTable"
 import { useUser } from "@/hooks/useUser"
-import PaymentTable from "./PaymentTable"
-
 
 function Payments() {
 
@@ -16,7 +15,9 @@ function Payments() {
             <h1>
                 سفارشات کاربر
             </h1>
-            <PaymentTable payments={payments} />
+            <PaymentTable
+                payments={payments}
+            />
         </div>
     )
 }

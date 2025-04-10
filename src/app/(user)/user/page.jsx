@@ -1,9 +1,10 @@
 "use client"
 
 import { toLocalDate } from "@/functions/toLocalDate"
-import PaymentTable from "./payments/PaymentTable"
 import Link from "next/link"
 import { useUser } from "@/hooks/useUser"
+import PaymentTable from "@/ components/PaymentTable"
+
 
 function Panel() {
 
@@ -31,7 +32,8 @@ function Panel() {
             <PaymentTable payments={payments
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                 .slice(0, 3)
-            } />
+            }
+            />
         </div>
     </div>
 }

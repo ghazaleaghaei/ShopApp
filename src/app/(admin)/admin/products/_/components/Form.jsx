@@ -130,7 +130,7 @@ function Form({ productToEdit = {} }) {
         <Select
             label="دسته بندی"
             name="category"
-            selectCategories={selectCategories}
+            selectItem={selectCategories}
             handleChange={(e) => setSelectCategories(e.target.value)}
             options={categories}
         />

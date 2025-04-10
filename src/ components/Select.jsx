@@ -1,6 +1,6 @@
 
-function Select({ label, name, selectCategories, handleChange, options }) {
-    console.log(selectCategories)
+function Select({ label, name, selectItem, handleChange, options }) {
+
     return (
         <div className="flex flex-col gap-2 my-4">
             <label htmlFor={name}>
@@ -9,7 +9,7 @@ function Select({ label, name, selectCategories, handleChange, options }) {
             <select
                 id={name}
                 className="rounded-xl p-2 outline-none focus:shadow-lg duration-300 bg-color2/10"
-                value={selectCategories}
+                value={selectItem}
                 onChange={handleChange}
             >
                 <option value="">لطفا انتخاب کنید...</option>

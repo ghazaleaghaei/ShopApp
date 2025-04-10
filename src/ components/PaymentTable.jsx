@@ -1,39 +1,52 @@
 import { toLocalDate } from "@/functions/toLocalDate"
 import { toPersianNumbersWithComma } from "@/functions/toPersionNumbers"
+import Link from "next/link";
+import { HiEye } from "react-icons/hi";
 
-const userPaymentHeads = [
-    {
-        id: 1,
-        label: "#"
-    },
-    {
-        id: 2,
-        label: "شماره فاکتور"
-    },
-    {
-        id: 3,
-        label: "توضیحات"
-    },
-    {
-        id: 4,
-        label: "محصولات"
-    },
-    {
-        id: 5,
-        label: "مبلغ"
-    },
-    {
-        id: 6,
-        label: "تاریخ"
-    },
-    {
-        id: 7,
-        label: "وضعیت"
+function PaymentTable({
+    payments,
+    isAdmin,
+}) {
+
+    const userPaymentHeads = [
+        {
+            id: 1,
+            label: "#"
+        },
+        {
+            id: 2,
+            label: "شماره فاکتور"
+        },
+        {
+            id: 3,
+            label: "توضیحات"
+        },
+        {
+            id: 5,
+            label: "محصولات"
+        },
+        {
+            id: 6,
+            label: "مبلغ"
+        },
+        {
+            id: 7,
+            label: "تاریخ"
+        },
+        {
+            id: 8,
+            label: "وضعیت"
+        },
+    ]
+
+    const userItem = { id: 4, label: "کاربر" };
+    const viewItem = { id: 9, label: "مشاهده" }
+
+    if (isAdmin) {
+        userPaymentHeads.splice(3, 0, userItem);
+        userPaymentHeads.push(viewItem)
     }
-]
 
-
-function PaymentTable({ payments }) {
     return <div className="shadow-md overflow-auto my-8">
         <table className="border-collapse table-auto w-full min-w-[800px] text-sm">
             <thead>
@@ -57,6 +70,16 @@ function PaymentTable({ payments }) {
                         <td className="max-w-[280px] whitespace-nowrap truncate">
                             {payment.description}
                         </td>
+                        {
+                            isAdmin
+                            && <td className="whitespace-nowrap truncate">
+                                <div className="flex flex-col gap-y-2">
+                                    <p>{payment.user.name}</p>
+                                    <p>{payment.user.email}</p>
+                                    <strong>{payment.user.phoneNumber}</strong>
+                                </div>
+                            </td>
+                        }
                         <td>
                             <div className="flex flex-col gap-y-2 items-start">
                                 {
@@ -83,6 +106,14 @@ function PaymentTable({ payments }) {
                                     </span>
                             }
                         </td>
+                        {
+                            isAdmin
+                            && <td>
+                                <Link href={`/admin/payments/${payment._id}`}>
+                                    <HiEye className="w-6 h-6 text-primary-900" />
+                                </Link>
+                            </td>
+                        }
                     </tr>)
                 }
             </tbody>
