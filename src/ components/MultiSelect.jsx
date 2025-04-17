@@ -39,7 +39,7 @@ function MultiSelect({ label, name, selected, setSelected, toggleOption, options
             </div>
 
             {isOpen && (
-                <div className="absolute z-10 w-full border border-secondary-50 rounded-xl max-h-60 overflow-y-auto shadow">
+                <div className="absolute z-10 w-full border border-secondary-50 rounded-xl max-h-60 overflow-y-auto bg-white">
                     {options.map((option) => (
                         <div
                             key={option._id}

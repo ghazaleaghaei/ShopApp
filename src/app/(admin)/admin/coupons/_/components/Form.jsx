@@ -5,6 +5,10 @@ import RadioInput from "@/ components/RadioInput"
 import TextField from "@/ components/TextField"
 import { useProducts } from "@/hooks/useProducts"
 import { useState } from "react"
+import DatePicker from "react-multi-date-picker"
+import persian from "react-date-object/calendars/persian"
+import persian_fa from "react-date-object/locales/persian_fa"
+import { useAddCoupon } from "@/hooks/useCoupons"
 
 const couponsFormData = [
     {
@@ -36,13 +40,24 @@ function Form() {
     })
     const [type, setType] = useState("percent")
     const [productsId, setProductsId] = useState([])
+    const [expireDate, setExpireDate] = useState(new Date())
+
+    const { isLoading, submitHandler } = useAddCoupon({
+        ...formData,
+        type: type,
+        expireDate: new Date(expireDate).toISOString(),
+        productIds: productsId.map((p) => p._id)
+    })
 
     const handelChange = e => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
     }
 
     return (
-        <form className="space-y-4 mt-10 pb-72">
+        <form
+            className="space-y-4 mt-10 pb-72"
+            onSubmit={submitHandler}
+        >
             {
                 couponsFormData.map(item =>
                     <TextField
@@ -87,6 +102,24 @@ function Form() {
                 options={products}
                 setSelected={setProductsId}
             />
+            <div>
+                <span className="mb-2 block">تاریخ انتقضا</span>
+                <DatePicker
+                    inputClass="rounded-xl p-3 outline-none focus:shadow-lg duration-300 focus:shadow-secondary-300 focus:border focus:border-primary-300 border"
+                    value={expireDate}
+                    onChange={date => setExpireDate(date)}
+                    format="YYYY/MM/DD"
+                    calendar={persian}
+                    locale={persian_fa}
+                />
+            </div>
+            <button
+                className="w-full bg-primary-900 text-white p-3 rounded-xl disabled:opacity-50"
+                type="submit"
+                disabled={isLoading}
+            >
+                اضافه کردن
+            </button>
         </form>
     )
 }
