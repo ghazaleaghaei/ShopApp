@@ -4,11 +4,11 @@ import MultiSelect from "@/ components/MultiSelect"
 import RadioInput from "@/ components/RadioInput"
 import TextField from "@/ components/TextField"
 import { useProducts } from "@/hooks/useProducts"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import DatePicker from "react-multi-date-picker"
 import persian from "react-date-object/calendars/persian"
 import persian_fa from "react-date-object/locales/persian_fa"
-import { useAddCoupon } from "@/hooks/useCoupons"
+import { useAddCoupon, useUpdateCoupon } from "@/hooks/useCoupons"
 
 const couponsFormData = [
     {
@@ -28,7 +28,10 @@ const couponsFormData = [
     },
 ]
 
-function Form() {
+function Form({ couponToEdit = {} }) {
+
+    const { _id: editId } = couponToEdit;
+    const isEditSession = Boolean(editId)
 
     const { data } = useProducts()
     const { products } = data || {}
@@ -42,11 +45,35 @@ function Form() {
     const [productsId, setProductsId] = useState([])
     const [expireDate, setExpireDate] = useState(new Date())
 
+    useEffect(() => {
+        if (isEditSession) {
+            setFormData({
+                code: couponToEdit.code,
+                amount: couponToEdit.amount,
+                usageLimit: couponToEdit.usageLimit
+            })
+            setType(couponToEdit.type)
+            setProductsId(couponToEdit.productIds)
+            setExpireDate(couponToEdit.expireDate)
+        }
+
+    }, [couponToEdit])
+
     const { isLoading, submitHandler } = useAddCoupon({
         ...formData,
         type: type,
         expireDate: new Date(expireDate).toISOString(),
         productIds: productsId.map((p) => p._id)
+    })
+
+    const { editSubmitHandler, isEditing } = useUpdateCoupon({
+        editData: {
+            ...formData,
+            type: type,
+            expireDate: new Date(expireDate).toISOString(),
+            productIds: productsId.map((p) => p._id)
+        },
+        id: editId
     })
 
     const handelChange = e => {
@@ -56,7 +83,7 @@ function Form() {
     return (
         <form
             className="space-y-4 mt-10 pb-72"
-            onSubmit={submitHandler}
+            onSubmit={isEditSession ? editSubmitHandler : submitHandler}
         >
             {
                 couponsFormData.map(item =>
@@ -116,9 +143,13 @@ function Form() {
             <button
                 className="w-full bg-primary-900 text-white p-3 rounded-xl disabled:opacity-50"
                 type="submit"
-                disabled={isLoading}
+                disabled={isLoading || isEditing}
             >
-                اضافه کردن
+                {
+                    isEditSession
+                        ? "ویرایش کد تخفیف"
+                        : "اضافه کردن کد تخفیف"
+                }
             </button>
         </form>
     )

@@ -1,8 +1,8 @@
 import Link from "next/link"
 import { HiEye, HiTrash } from "react-icons/hi"
 import { BiSolidEditAlt } from "react-icons/bi";
-import { useRemoveCategory } from "@/hooks/useCategories";
 import { toLocalDate } from "@/functions/toLocalDate";
+import { useRemoveCoupon } from "@/hooks/useCoupons";
 
 const couponsTableHeads = [
     {
@@ -37,10 +37,14 @@ const couponsTableHeads = [
         id: 8,
         label: "تاریخ انقضا"
     },
+    {
+        id: 9,
+        label: "عملیات"
+    },
 ]
 
 function CouponsTable({ coupons }) {
-    console.log(coupons)
+    const { isRemoving, removeSubmitHandler } = useRemoveCoupon()
     return <div className="shadow-md overflow-auto my-8">
         <table className="border-collapse table-auto w-full min-w-[800px] text-sm">
             <thead>
@@ -79,6 +83,23 @@ function CouponsTable({ coupons }) {
                         <td>{coupon.usageCount}</td>
                         <td>{coupon.usageLimit}</td>
                         <td>{toLocalDate(coupon.expireDate)}</td>
+                        <td>
+                            <div className="font-bold flex items-center justify-start gap-2">
+                                <Link href={`/admin/coupons/${coupon._id}`}>
+                                    <HiEye className="text-primary-900 w-6 h-6" />
+                                </Link>
+                                <button
+                                    className="disabled:opacity-50 cursor-pointer"
+                                    onClick={(e) => removeSubmitHandler(coupon._id, e)}
+                                    disabled={isRemoving}
+                                >
+                                    <HiTrash className="text-rose-600 w-6 h-6" />
+                                </button>
+                                <Link href={`/admin/coupons/edit/${coupon._id}`}>
+                                    <BiSolidEditAlt className="w-6 h-6 text-secondary-600" />
+                                </Link>
+                            </div>
+                        </td>
                     </tr>)
                 }
             </tbody>
